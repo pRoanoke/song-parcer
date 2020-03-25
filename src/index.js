@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import './index.scss';
@@ -12,11 +12,12 @@ export function App() {
   const [parseResults, setResults] = useState([]);
   const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(false);
+  const input = useRef(null);
 
   /* Core Function that handles uploaded folder */
   const onMusicUpload = async (event) => {
     setLoading(true)
-    const { files } = event.target;
+    const {files} = event.target;
 
     for (const file of files) {
       const parseResult = {
@@ -36,33 +37,39 @@ export function App() {
         });
 
       } catch (err) {
+        notification.error({
+          message: "Something went wrong with current song:",
+          description: `${err.message}`,
+          duration: 2
+        });
         setResults(results => {
           results[results.length - 1].error = err.message;
           return results;
         });
       }
     }
-    groupSongsAndRemoveDuplicates();
+    groupSongsAndRemoveDuplicates(files);
   };
 
-  const parseFile = async (file) => mmb.parseBlob(file, { native: true }).then(metadata => metadata);
+  const parseFile = async (file) => mmb.parseBlob(file).then(metadata => metadata);
 
-  const groupSongsAndRemoveDuplicates = () => {
+  const groupSongsAndRemoveDuplicates = (total) => {
     parseResults.forEach(song => {
-      const { metadata: { common: { album, artists, artist } } } = song;
-      const artistName = artists.length > 1 ? artists.join(', ') : artist;
+      const {metadata: {common: {album}}} = song;
       if (album) {
         setAlbums(albums => {
           albums.push(album);
           return Array.from(new Set(albums));
         })
       }
-    })
+    });
     setResults(results => Array.from(new Set(results)));
     setLoading(false);
     notification.success({
-      message: "Songs have been successfully grouped!",
-      duration: 2
+      message: `We have successfully parsed 
+      ${parseResults.filter(song => song.hasOwnProperty('metadata')).length - 1} out of ${total.length} songs`,
+      description: `${!albums.length ? 'But did not get any album and artist info' : ''}`,
+      duration: 3
     })
   };
 
@@ -70,23 +77,29 @@ export function App() {
     <div className={styles.app}>
       <div className={styles.headliner}>SONG PARSER</div>
       <div>
-        <label className={styles.uploadBlock}>
-          <UploadOutlined />Upload music
+        <label
+          onClick={() => {
+            setResults([])
+            input.current.value = null;
+          }}
+          className={styles.uploadBlock}>
+          <UploadOutlined/>Upload music
           <input
+            ref={input}
             className={styles.input}
             onChange={onMusicUpload}
             type="file"
-            webkitdirectory=''
-            mozdirectory=''
-            multiple
+            directory='directory'
+            webkitdirectory='webkitdirectory'
+            mozdirectory='mozdirectory'
           />
         </label>
       </div>
       {/* TODO: It could be a lot better to encapsulate this code into another component */}
       <div className={styles.albums}>
-        {loading && <Spin />}
-        {!loading && albums.map(album => (
-          <div className={styles.album}>
+        {loading && <Spin/>}
+        {!loading && !!parseResults.length && albums.map((album, index) => (
+          <div key={index} className={styles.album}>
             <div className={styles.album_cover}>
               <div className={styles.album_cover_artist}>
                 {parseResults.find(item => item.metadata.common.album === album)
@@ -100,10 +113,10 @@ export function App() {
               {parseResults
                 .filter(song => song.metadata.common.album === album)
                 .sort((a, b) => a.metadata.common.track.no - b.metadata.common.track.no)
-                .map(song => {
-                  const { file: { name }, metadata: {common: { track, title } }} = song;
+                .map((song, index) => {
+                  const {file: {name}, metadata: {common: {track, title}}} = song;
                   return (
-                    <div className={styles.album_track}>
+                    <div key={index} className={styles.album_track}>
                       {track.no}. {title}
                       <div className={styles.album_track_name}>{name}</div>
                     </div>
@@ -120,7 +133,7 @@ export function App() {
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App/>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -2,22 +2,23 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
 }
 
 .headliner {
-  margin-top: 50px;
+  margin-top: 30px;
   font-size: 25px;
   font-weight: bold;
   letter-spacing: 2px;
 }
 
 .uploadBlock {
+  cursor: pointer;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 10px;
   width: 150px;
   height: 40px;
   border: 1px outset #dc989e;
@@ -91,6 +92,7 @@
 }
 
 .footer {
+  bottom: 0;
+  position: absolute;
   font-size: 10px;
-  text-align: right;
 }
