@@ -1,0 +1,96 @@
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headliner {
+  margin-top: 50px;
+  font-size: 25px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.uploadBlock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 40px;
+  border: 1px outset #dc989e;
+  transition: box-shadow .3s;
+  -webkit-box-shadow: 1px 1px 5px 1px #ff6580ad;
+  -moz-box-shadow: 1px 1px 5px 1px #ff6580ad;
+  box-shadow: 1px 1px 5px 1px #ff6580ad;
+  background-color: #ff6580;
+  font-size: 13px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  &:hover {
+    border-style: inset;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  & > span {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+}
+
+.input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.albums {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  width: 90%;
+}
+
+.album {
+  padding: 20px;
+  width: 300px;
+  margin-top: 10px;
+  border: 1px solid #e7e7e7;
+  margin-right: 20px;
+  &_cover {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    &_artist {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    &_albumName {
+      font-size: 12px;
+      font-weight: bold;
+      color: #989898;
+    }
+  }
+  &_track {
+    font-style: italic;
+    &_name {
+      font-style: normal;
+      font-size: 11px;
+      color: #989898;
+    }
+  }
+}
+
+.footer {
+  font-size: 10px;
+  text-align: right;
+}
