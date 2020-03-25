@@ -8,11 +8,10 @@ How to start?
 ```
 <br />
 How to build an embedded single page of the app?
-<br />
 `npm run build`
 
 How to embed the code on another web page?
-####Add a react CDNs and font CDN to your html file:
+#### Add a react CDNs and font CDN to your html file:
 ```
    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js" charset="utf-8"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js" charset="utf-8"></script>
