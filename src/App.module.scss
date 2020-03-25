@@ -58,6 +58,7 @@
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 50px;
+  margin-bottom: 20px;
   width: 90%;
 }
 
@@ -93,6 +94,6 @@
 
 .footer {
   bottom: 0;
-  position: absolute;
+  position: fixed;
   font-size: 10px;
 }
